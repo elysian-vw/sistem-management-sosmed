@@ -21,10 +21,10 @@ class TrendAi extends BaseController
 
     public function index()
     {
-        $db   = \Config\Database::connect();
+        $db = \Config\Database::connect();
         $role = session('kode_role');
 
-        if (! in_array($role, ['creative_team', 'superadmin', 'owner'], true)) {
+        if (!in_array($role, ['creative_team', 'superadmin', 'owner'], true)) {
             return redirect()->to('/dashboard/content-plan');
         }
 
@@ -47,36 +47,36 @@ class TrendAi extends BaseController
         ];
 
         // Master data untuk modal ajukan ide (filter by bisnis + global fallback)
-        $platforms    = $db->table('platforms')
+        $platforms = $db->table('platforms')
             ->where('status', 'aktif')
             ->groupStart()
-                ->where('bisnis_id', $bisnisId)
-                ->orWhere('bisnis_id IS NULL')
+            ->where('bisnis_id', $bisnisId)
+            ->orWhere('bisnis_id IS NULL')
             ->groupEnd()
             ->get()->getResultArray();
 
-        $jenisKonten  = $db->table('jenis_konten')
+        $jenisKonten = $db->table('jenis_konten')
             ->groupStart()
-                ->where('bisnis_id', $bisnisId)
-                ->orWhere('bisnis_id IS NULL')
+            ->where('bisnis_id', $bisnisId)
+            ->orWhere('bisnis_id IS NULL')
             ->groupEnd()
             ->get()->getResultArray();
 
         $contentTypes = $db->table('content_types')
             ->groupStart()
-                ->where('bisnis_id', $bisnisId)
-                ->orWhere('bisnis_id IS NULL')
+            ->where('bisnis_id', $bisnisId)
+            ->orWhere('bisnis_id IS NULL')
             ->groupEnd()
             ->get()->getResultArray();
 
         return view('trend_ai/index', [
-            'judul'         => 'Bank Trend & Inspirasi AI',
-            'audioTrends'   => $audioTrends,
+            'judul' => 'Bank Trend & Inspirasi AI',
+            'audioTrends' => $audioTrends,
             'eventCalendar' => $eventCalendar,
-            'platforms'     => $platforms,
-            'jenisKonten'   => $jenisKonten,
-            'contentTypes'  => $contentTypes,
-            'kode_role'     => $role,
+            'platforms' => $platforms,
+            'jenisKonten' => $jenisKonten,
+            'contentTypes' => $contentTypes,
+            'kode_role' => $role,
         ]);
     }
 
@@ -85,20 +85,26 @@ class TrendAi extends BaseController
      */
     public function generateHook(): \CodeIgniter\HTTP\ResponseInterface
     {
-        $topik    = $this->request->getPost('topik');
+        $topik = $this->request->getPost('topik');
         $platform = $this->request->getPost('platform') ?: 'Instagram';
 
-        if (! $topik) {
+        if (!$topik) {
             return $this->response->setJSON([
                 'sukses' => false,
-                'pesan'  => 'Topik wajib diisi.',
+                'pesan' => 'Topik wajib diisi.',
             ])->setStatusCode(400);
         }
 
+<<<<<<< HEAD
         $userId = (int) session('user_id');
 
         try {
             $hasilAi = $this->aiService->generateHooks($topik, $platform, $userId);
+=======
+        try {
+            $userId  = (int) session('user_id');
+            $hasilAi = $this->aiService->generateHook($topik, $platform, $userId);
+>>>>>>> 3c3b1c5586d126f57b65bde708a716f5601e4143
             return $this->response->setJSON([
                 'sukses' => true,
                 'data'   => $hasilAi,
@@ -106,7 +112,7 @@ class TrendAi extends BaseController
         } catch (\Throwable $e) {
             return $this->response->setJSON([
                 'sukses' => false,
-                'pesan'  => 'Gagal generate hook AI: ' . $e->getMessage(),
+                'pesan' => 'Gagal generate hook AI: ' . $e->getMessage(),
             ])->setStatusCode(500);
         }
     }
