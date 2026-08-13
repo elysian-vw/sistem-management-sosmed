@@ -154,10 +154,9 @@ class AiService
     }
 
     // =========================================================================
-<<<<<<< HEAD
     // FITUR: AI HOOK GENERATOR
     // =========================================================================
-    public function generateHooks(string $topik, string $platform, int $userId = 0): string
+    public function generateHooks(string $topik, string $platform, ?int $userId = null): string
     {
         $prompt = "Kamu adalah Strategis Konten Media Sosial berpengalaman. Tolong buatkan 5 contoh kalimat pembuka (Viral Hook 3 detik pertama) yang sangat menarik dan terbukti efektif untuk konten {$platform} berdasarkan topik/produk: \"{$topik}\".\n\n";
         $prompt .= "Untuk setiap hook, berikan:\n";
@@ -165,13 +164,6 @@ class AiService
         $prompt .= "2. Tipe Hook (misal: Curiosity, Fear of Missing Out, Problem-Solving, Bold Statement)\n";
         $prompt .= "3. Alasan singkat kenapa hook ini efektif\n\n";
         $prompt .= "Format output dengan rapi, singkat, dan siap pakai.";
-=======
-    // FITUR: AI VIRAL HOOK GENERATOR
-    // =========================================================================
-    public function generateHook(string $topik, string $platform, ?int $userId = null): string
-    {
-        $prompt = "Buatkan 3 contoh kalimat pembuka (Viral Hook) yang sangat menarik untuk konten {$platform} dengan topik: \"{$topik}\". Berikan format 1, 2, 3 yang singkat dan siap pakai.";
->>>>>>> 3c3b1c5586d126f57b65bde708a716f5601e4143
 
         $output = $this->callGemini($prompt);
 
@@ -180,14 +172,15 @@ class AiService
         return trim($output);
     }
 
+    public function generateHook(string $topik, string $platform, ?int $userId = null): string
+    {
+        return $this->generateHooks($topik, $platform, $userId);
+    }
+
     // =========================================================================
     // FITUR 9.1: AI IDEA GENERATOR
     // =========================================================================
-<<<<<<< HEAD
-    public function generateIdeas(string $topik, string $platform, int $userId = 0): string
-=======
     public function generateIdeas(string $topik, string $platform, ?int $userId = null): string
->>>>>>> 3c3b1c5586d126f57b65bde708a716f5601e4143
     {
         $prompt = "Kamu adalah Strategis Konten Media Sosial berpengalaman. Tolong berikan 3 ide konten kreatif untuk platform {$platform} berdasarkan topik/produk: \"{$topik}\".\n\n";
         $prompt .= "Untuk setiap ide, berikan:\n";

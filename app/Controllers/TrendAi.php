@@ -95,16 +95,10 @@ class TrendAi extends BaseController
             ])->setStatusCode(400);
         }
 
-<<<<<<< HEAD
         $userId = (int) session('user_id');
 
         try {
             $hasilAi = $this->aiService->generateHooks($topik, $platform, $userId);
-=======
-        try {
-            $userId  = (int) session('user_id');
-            $hasilAi = $this->aiService->generateHook($topik, $platform, $userId);
->>>>>>> 3c3b1c5586d126f57b65bde708a716f5601e4143
             return $this->response->setJSON([
                 'sukses' => true,
                 'data'   => $hasilAi,
